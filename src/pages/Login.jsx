@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import LoginTabs from "../components/LoginTabs";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -41,27 +42,32 @@ export default function Login() {
 
   return (
     <div>
-      <form onSubmit={loginUser}>
-        <label>Email: </label>
-        <input
-          type="email"
-          placeholder="Enter email"
-          value={userData.email}
-          onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-        ></input>
-        <br />
-        <label>Password: </label>
-        <input
-          type="password"
-          placeholder="Enter password"
-          value={userData.password}
-          onChange={(e) =>
-            setUserData({ ...userData, password: e.target.value })
-          }
-        ></input>
-        <br />
-        <button type="submit">Login</button>
-      </form>
+      <LoginTabs />
+      <div className="form-container m-4">
+        <form onSubmit={loginUser}>
+          <label>Email: </label>
+          <input
+            type="email"
+            placeholder="Enter email"
+            value={userData.email}
+            onChange={(e) =>
+              setUserData({ ...userData, email: e.target.value })
+            }
+          ></input>
+          <br />
+          <label>Password: </label>
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={userData.password}
+            onChange={(e) =>
+              setUserData({ ...userData, password: e.target.value })
+            }
+          ></input>
+          <br />
+          <button type="submit">Login</button>
+        </form>
+      </div>
     </div>
   );
 }

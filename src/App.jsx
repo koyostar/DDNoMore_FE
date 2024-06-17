@@ -1,23 +1,29 @@
-import { Route, Routes } from "react-router-dom";
-import "./App.css";
+import { Navigate, Route, Routes } from "react-router-dom";
+import "./index.css";
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
-import { UserContextProvider } from "./utilities/user";
+import { UserContext, UserContextProvider } from "./utilities/user";
 import Dashboard from "./pages/Dashboard";
+import Tasks from "./pages/Tasks";
+import Timer from "./pages/Timer";
+import TaskDetails from "./pages/TaskDetails";
+import Sidebar from "./components/Sidebar";
+import { useContext } from "react";
+import Header from "./components/Header";
 
 axios.defaults.baseURL = "http://localhost:8000/";
 axios.defaults.withCredentials = true;
 
 function App() {
+  const { user } = useContext(UserContext);
   return (
-    <div>
-      <h1>DD No More</h1>
-      <UserContextProvider>
-        <NavBar />
+    <UserContextProvider>
+      <div className="app-container">
+        <Header />
         <Toaster
           position="bottom-center"
           toastOptions={{
@@ -28,14 +34,31 @@ function App() {
             },
           }}
         />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </UserContextProvider>
-    </div>
+
+        {user ? (
+          <div className="flex">
+            <NavBar />
+            <Sidebar />
+            <div className="flex-1 p-5">
+              <Routes>
+                <Route path="/" element={<Navigate to="/dashboard" />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/tasks" element={<Tasks />} />
+                <Route path="/task/:id" element={<TaskDetails />} />
+                <Route path="/tasks/:status" element={<Tasks />} />
+                <Route path="/timer" element={<Timer />} />
+              </Routes>
+            </div>
+          </div>
+        ) : (
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        )}
+      </div>
+    </UserContextProvider>
   );
 }
 
