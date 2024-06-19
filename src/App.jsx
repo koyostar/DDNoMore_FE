@@ -9,11 +9,11 @@ import { UserContext, UserContextProvider } from "./utilities/user";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Timer from "./pages/Timer";
-import TaskDetails from "./pages/TaskDetails";
 import Sidebar from "./components/Sidebar";
 import { useContext } from "react";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
+import TaskCard from "./components/TaskCard";
 
 axios.defaults.baseURL = "http://localhost:8000/";
 axios.defaults.withCredentials = true;
@@ -42,7 +42,7 @@ function AppContent() {
               <Route path="/" element={<Navigate to="/dashboard" />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/tasks" element={<Tasks />} />
-              <Route path="/task/:id" element={<TaskDetails />} />
+              <Route path="/task/:id" element={<TaskCard />} />
               <Route path="/tasks/:status" element={<Tasks />} />
               <Route path="/timer" element={<Timer />} />
             </Routes>
