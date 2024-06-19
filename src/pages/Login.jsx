@@ -8,17 +8,16 @@ export default function Login() {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
   const loginUser = async (e) => {
     e.preventDefault();
-    const { email, password } = userData;
-    console.log(userData);
+    const { username, password } = userData;
     try {
       const response = await axios.post("/login", {
-        email,
+        username,
         password,
       });
 
@@ -27,7 +26,10 @@ export default function Login() {
       if (data.error) {
         toast.error(data.error);
       } else {
-        setUserData({});
+        setUserData({
+          username: "",
+          password: "",
+        });
         toast.success("Login Successful. Welcome!");
         navigate("/dashboard");
       }
@@ -45,13 +47,13 @@ export default function Login() {
       <LoginTabs />
       <div className="form-container m-4">
         <form onSubmit={loginUser}>
-          <label>Email: </label>
+          <label>Username: </label>
           <input
-            type="email"
-            placeholder="Enter email"
-            value={userData.email}
+            type="text"
+            placeholder="Enter username"
+            value={userData.username}
             onChange={(e) =>
-              setUserData({ ...userData, email: e.target.value })
+              setUserData({ ...userData, username: e.target.value })
             }
           ></input>
           <br />

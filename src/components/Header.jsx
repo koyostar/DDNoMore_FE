@@ -1,14 +1,10 @@
-import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../utilities/user";
 
 export default function Header() {
-  const { toggleSidebar } = useContext(UserContext);
-
   return (
-    <div className="flex flex-col m-4">
+    <div className="mt-4 text-center">
       <Link to="/">
-        <span className="text-lightpri font-bebas text-5xl font-bold">
+        <span className="text-lightpri font-bebas text-5xl font-bold text-center">
           DD No More
         </span>
       </Link>
