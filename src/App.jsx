@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./index.css";
-import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -10,54 +9,61 @@ import { UserContext, UserContextProvider } from "./utilities/user";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Timer from "./pages/Timer";
-import TaskDetails from "./pages/TaskDetails";
 import Sidebar from "./components/Sidebar";
 import { useContext } from "react";
 import Header from "./components/Header";
+import Navbar from "./components/Navbar";
+import TaskCard from "./components/TaskCard";
 
 axios.defaults.baseURL = "http://localhost:8000/";
 axios.defaults.withCredentials = true;
 
-function App() {
+function AppContent() {
   const { user } = useContext(UserContext);
+
+  return (
+    <div className="app-container">
+      <Header />
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          duration: 5000,
+          style: {
+            background: "#d3d3d3",
+            color: "#000000",
+          },
+        }}
+      />
+      {user ? (
+        <div>
+          <Navbar />
+          <div className="flex-1 p-5">
+            <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/tasks" element={<Tasks />} />
+              <Route path="/task/:id" element={<TaskCard />} />
+              <Route path="/tasks/:status" element={<Tasks />} />
+              <Route path="/timer" element={<Timer />} />
+            </Routes>
+          </div>
+          <Sidebar />
+        </div>
+      ) : (
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      )}
+    </div>
+  );
+}
+
+function App() {
   return (
     <UserContextProvider>
-      <div className="app-container">
-        <Header />
-        <Toaster
-          position="bottom-center"
-          toastOptions={{
-            duration: 5000,
-            style: {
-              background: "#d3d3d3",
-              color: "#000000",
-            },
-          }}
-        />
-
-        {user ? (
-          <div className="flex">
-            <NavBar />
-            <Sidebar />
-            <div className="flex-1 p-5">
-              <Routes>
-                <Route path="/" element={<Navigate to="/dashboard" />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/tasks" element={<Tasks />} />
-                <Route path="/task/:id" element={<TaskDetails />} />
-                <Route path="/tasks/:status" element={<Tasks />} />
-                <Route path="/timer" element={<Timer />} />
-              </Routes>
-            </div>
-          </div>
-        ) : (
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        )}
-      </div>
+      <AppContent />
     </UserContextProvider>
   );
 }

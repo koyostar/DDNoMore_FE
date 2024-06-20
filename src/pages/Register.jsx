@@ -8,6 +8,7 @@ export default function Register() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
     name: "",
+    username: "",
     email: "",
     password: "",
   });
@@ -15,10 +16,11 @@ export default function Register() {
   const registerUser = async (e) => {
     e.preventDefault();
 
-    const { name, email, password } = userData;
+    const { name, username, email, password } = userData;
     try {
       const response = await axios.post("/register", {
         name,
+        username,
         email,
         password,
       });
@@ -50,6 +52,16 @@ export default function Register() {
             onChange={(e) => setUserData({ ...userData, name: e.target.value })}
           ></input>
           <br />
+          <label>Username: </label>
+          <input
+            type="text"
+            placeholder="Enter username"
+            value={userData.username}
+            onChange={(e) =>
+              setUserData({ ...userData, username: e.target.value })
+            }
+          ></input>
+          <br />
           <label>Email: </label>
           <input
             type="email"
@@ -72,7 +84,7 @@ export default function Register() {
           <br />
           <button type="submit">Submit</button>
         </form>
-      </div>{" "}
+      </div>
     </div>
   );
 }
