@@ -27,7 +27,7 @@ export default function Register() {
       if (response.status === 201) {
         setUserData({});
         toast.success("Registration Successful. Welcome!");
-        navigate("/");
+        navigate("/dashboard");
       }
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
@@ -40,12 +40,13 @@ export default function Register() {
   };
 
   return (
-    <div>
+    <div className="container font-bold bg-lightsec mx-auto max-w-md p-4 rounded-2xl">
       <LoginTabs />
       <div className="form-container m-4">
         <form onSubmit={registerUser}>
           <label>Name: </label>
           <input
+            className="m-4 "
             type="text"
             placeholder="Enter name"
             value={userData.name}
@@ -54,6 +55,7 @@ export default function Register() {
           <br />
           <label>Username: </label>
           <input
+            className="m-4 "
             type="text"
             placeholder="Enter username"
             value={userData.username}
@@ -64,6 +66,7 @@ export default function Register() {
           <br />
           <label>Email: </label>
           <input
+            className="m-4 "
             type="email"
             placeholder="Enter email"
             value={userData.email}
@@ -74,6 +77,7 @@ export default function Register() {
           <br />
           <label>Password: </label>
           <input
+            className="m-4 "
             type="password"
             placeholder="Enter password"
             value={userData.password}
@@ -82,7 +86,12 @@ export default function Register() {
             }
           ></input>
           <br />
-          <button type="submit">Submit</button>
+          <button
+            className="bg-lightacc text-darksec my-4 mx-2 px-4 py-2 rounded"
+            type="submit"
+          >
+            Submit
+          </button>
         </form>
       </div>
     </div>
