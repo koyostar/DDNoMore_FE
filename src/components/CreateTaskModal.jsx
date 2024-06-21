@@ -8,8 +8,8 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
   const [taskData, setTaskData] = useState({
     title: "",
     dueDate: "",
-    priority: "normal",
-    status: "to-do",
+    priority: "Normal",
+    status: "To Do",
     description: "",
   });
 
@@ -28,8 +28,8 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
       setTaskData({
         title: "",
         dueDate: "",
-        priority: "normal",
-        status: "to-do",
+        priority: "Normal",
+        status: "To Do",
         description: "",
       });
 
@@ -48,15 +48,12 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
   return (
     <div className={modalClass}>
       <div className="flex items-center justify-center min-h-screen">
-        <div
-          className="fixed inset-0 bg-black opacity-30"
-          onClick={close}
-        ></div>
-        <div className="relative bg-white p-8 rounded-lg w-full max-w-md">
+        <div className="fixed inset-0 opacity-30" onClick={close}></div>
+        <div className="relative bg-lightsec p-8 rounded-lg w-full max-w-md">
           <h3 className="text-lg font-medium mb-4">Create Task</h3>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-darksec">
                 Title:
               </label>
               <input
@@ -70,7 +67,7 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-darksec">
                 Due Date:
               </label>
               <input
@@ -83,11 +80,11 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-darksec">
                 Priority:
               </label>
               <div className="flex space-x-4">
-                {["high", "medium", "normal", "low"].map((level) => (
+                {["High", "Medium", "Normal", "Low"].map((level) => (
                   <label
                     key={level}
                     className="inline-flex items-center space-x-2"
@@ -109,11 +106,11 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-darksec">
                 Status:
               </label>
               <div className="flex space-x-4">
-                {["to-do", "in progress", "completed"].map((status) => (
+                {["To Do", "In Progress", "Completed"].map((status) => (
                   <label
                     key={status}
                     className="inline-flex items-center space-x-2"
@@ -124,18 +121,16 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
                       value={status}
                       checked={taskData.status === status}
                       onChange={handleChange}
-                      className="form-radio text-indigo-600"
+                      className="form-radio"
                     />
-                    <span>
-                      {status.charAt(0).toUpperCase() + status.slice(1)}
-                    </span>
+                    <span>{status}</span>
                   </label>
                 ))}
               </div>
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-darksec">
                 Description:
               </label>
               <input
@@ -150,7 +145,7 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
             <div className="mt-4">
               <button
                 type="submit"
-                className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-darksec border border-transparent rounded-md hover:bg-darkacc focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
               >
                 Create Task
               </button>
