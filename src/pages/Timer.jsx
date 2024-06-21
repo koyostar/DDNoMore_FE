@@ -2,21 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaPause, FaPlay, FaStop } from "react-icons/fa";
 
-export default function Timer() {
+export default function Timer({ user }) {
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await axios.get("/tasks");
-        setTasks(response.data);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
-
     fetchTasks();
   }, []);
 
@@ -29,10 +20,34 @@ export default function Timer() {
     }
   }, [selectedTask]);
 
+  const fetchTasks = async () => {
+    try {
+      if (!user || !user.username) {
+        console.error("User information is missing.");
+        return;
+      }
+      const response = await axios.get(`/tasks/user/${user.username}`);
+      setTasks(response.data);
+      // Ensure selectedTask remains valid after tasks update
+      if (selectedTask) {
+        const updatedSelectedTask = response.data.find(
+          (t) => t._id === selectedTask._id
+        );
+        if (updatedSelectedTask) {
+          setSelectedTask(updatedSelectedTask);
+        } else {
+          setSelectedTask(null); // Clear selectedTask if it's not found in updated tasks
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  };
+
   const updateTask = async (url, message) => {
     try {
       const response = await axios.put(url);
-      console.log(response.data.message);
+      console.log(`${message} successful:`, response.data.message);
       fetchTasks();
     } catch (error) {
       console.error(
@@ -42,20 +57,19 @@ export default function Timer() {
     }
   };
 
-  const startTimer = () =>
-    updateTask(`/timer/start/${selectedTask._id}`, "starting task");
-  const pauseTimer = () =>
-    updateTask(`/timer/pause/${selectedTask._id}`, "pausing task");
-  const endTimer = () =>
-    updateTask(`/timer/end/${selectedTask._id}`, "ending task");
+  const startTimer = () => {
+    if (!selectedTask) return;
+    updateTask(`/timer/start/${selectedTask._id}`, "Starting task");
+  };
 
-  const fetchTasks = async () => {
-    try {
-      const response = await axios.get("/tasks");
-      setTasks(response.data);
-    } catch (error) {
-      console.error("Error fetching tasks:", error);
-    }
+  const pauseTimer = () => {
+    if (!selectedTask) return;
+    updateTask(`/timer/pause/${selectedTask._id}`, "Pausing task");
+  };
+
+  const endTimer = () => {
+    if (!selectedTask) return;
+    updateTask(`/timer/end/${selectedTask._id}`, "Ending task");
   };
 
   const handleTaskChange = (event) => {
@@ -97,89 +111,95 @@ export default function Timer() {
   };
 
   return (
-    <div className="timer-container bg-lightacc text-darkpri p-5 rounded-lg md:box-content w-2/3">
-      <h1 className="text-center">Timer</h1>
-      <div className="m-5">
-        Task:&emsp;
-        <select onChange={handleTaskChange} defaultValue="">
-          <option value="" disabled>
-            Select a task
-          </option>
-          {tasks.map((task) => (
-            <option key={task._id} value={task._id}>
-              {task.title}
+    <div className="flex items-center justify-center">
+      <div className="timer-container bg-lightacc text-darkpri p-5 rounded-lg md:box-content w-2/3">
+        <h1 className="text-center">Timer</h1>
+        <div className="m-5 text-center">
+          Task:&emsp;
+          <select onChange={handleTaskChange} defaultValue="">
+            <option value="" disabled>
+              Select a task
             </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="m-5">
-        <h2>{selectedTask ? selectedTask.title : ""}</h2>
-        <p>
-          Start Date:&emsp;
-          {selectedTask
-            ? selectedTask.startDate
-              ? new Date(selectedTask.startDate).toLocaleString()
-              : "Not started"
-            : ""}
-        </p>
-        <p>
-          Completed Date:&emsp;
-          {selectedTask
-            ? selectedTask.completedDate
-              ? new Date(selectedTask.completedDate).toLocaleString()
-              : "Not completed"
-            : ""}
-        </p>
-        <p>Status:&emsp; {selectedTask ? selectedTask.status : ""}</p>
-        <div>
-          Logged Time:&emsp;
-          <br />
-          <span className="timer text-4xl">
-            {selectedTask
-              ? selectedTask.completedDate
-                ? selectedTask.loggedTime
-                : calculateRunningTime()
-              : "00:00:00"}
-          </span>
+            {tasks.map((task) => (
+              <option key={task._id} value={task._id}>
+                {task.title}
+              </option>
+            ))}
+          </select>
         </div>
-      </div>
 
-      <div className="flex space-x-4 text-lightpri m-5">
-        <button
-          onClick={startTimer}
-          disabled={!selectedTask || selectedTask.status === "in progress"}
-          className={`px-4 py-2 rounded ${
-            !selectedTask || selectedTask.status === "in progress"
-              ? "bg-disabled cursor-not-allowed"
-              : "bg-enabled hover:bg-blue-700"
-          }`}
-        >
-          <FaPlay />
-        </button>
-        <button
-          onClick={pauseTimer}
-          disabled={!selectedTask || selectedTask.status !== "in progress"}
-          className={`px-4 py-2 rounded ${
-            !selectedTask || selectedTask.status !== "in progress"
-              ? "bg-disabled cursor-not-allowed"
-              : "bg-enabled hover:bg-blue-700"
-          }`}
-        >
-          <FaPause />
-        </button>
-        <button
-          onClick={endTimer}
-          disabled={!selectedTask || selectedTask.status === "completed"}
-          className={`px-4 py-2 rounded ${
-            !selectedTask || selectedTask.status === "completed"
-              ? "bg-disabled cursor-not-allowed"
-              : "bg-enabled hover:bg-blue-700"
-          }`}
-        >
-          <FaStop />
-        </button>
-      </div>
+        <div className="m-5">
+          <h2 className="text-center font-bold text-xl mb-3">
+            {selectedTask ? selectedTask.title : ""}
+          </h2>
+          <div className="ml-36 text-xl mb-3">
+            <p>
+              Start Date:&emsp;
+              {selectedTask
+                ? selectedTask.startDate
+                  ? new Date(selectedTask.startDate).toLocaleString()
+                  : "Not started"
+                : ""}
+            </p>
+            <p>
+              Completed Date:&emsp;
+              {selectedTask
+                ? selectedTask.completedDate
+                  ? new Date(selectedTask.completedDate).toLocaleString()
+                  : "Not completed"
+                : ""}
+            </p>
+            <p>Status:&emsp; {selectedTask ? selectedTask.status : ""}</p>
+          </div>
+          <div className="text-center font-bold text-xl mb-3">
+            Logged Time:&emsp;
+            <br />
+            <span className="timer text-4xl">
+              {selectedTask
+                ? selectedTask.completedDate
+                  ? selectedTask.loggedTime
+                  : calculateRunningTime()
+                : "00:00:00"}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex space-x-4 justify-center text-lightpri m-5">
+          <button
+            onClick={startTimer}
+            disabled={!selectedTask || selectedTask.status === "In Progress"}
+            className={`px-4 py-2 rounded ${
+              !selectedTask || selectedTask.status === "In Progress"
+                ? "bg-disabled cursor-not-allowed"
+                : "bg-enabled hover:bg-blue-700"
+            }`}
+          >
+            <FaPlay />
+          </button>
+          <button
+            onClick={pauseTimer}
+            disabled={!selectedTask || selectedTask.status !== "In Progress"}
+            className={`px-4 py-2 rounded ${
+              !selectedTask || selectedTask.status !== "In Progress"
+                ? "bg-disabled cursor-not-allowed"
+                : "bg-enabled hover:bg-blue-700"
+            }`}
+          >
+            <FaPause />
+          </button>
+          <button
+            onClick={endTimer}
+            disabled={!selectedTask || selectedTask.status === "Completed"}
+            className={`px-4 py-2 rounded ${
+              !selectedTask || selectedTask.status === "Completed"
+                ? "bg-disabled cursor-not-allowed"
+                : "bg-enabled hover:bg-blue-700"
+            }`}
+          >
+            <FaStop />
+          </button>
+        </div>
+      </div>{" "}
     </div>
   );
 }

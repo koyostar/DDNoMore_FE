@@ -7,10 +7,12 @@
 
 body {
   @apply bg-darkpri text-lightpri;
+  font-family: "Inter", sans-serif; /* Apply Inter font family */
 }
 
 h1 {
   @apply text-3xl font-bold font-roboto m-2;
+  font-family: "Roboto", sans-serif; /* Apply Roboto font family */
 }
 
 nav a {
@@ -21,21 +23,24 @@ input {
   @apply text-darkpri;
 }
 
+/* Sidebar styles */
 .sidebar {
   width: 240px; /* Adjust the width of the sidebar as needed */
   transition: transform 0.3s ease;
   position: fixed;
   bottom: 0;
+  left: 0;
+  top: 0;
   background-color: #2c3e50; /* Example background color */
-  transform: translateX(-100%);
-}
-
-.sidebar.closed {
   transform: translateX(-100%);
 }
 
 .sidebar.open {
   transform: translateX(0);
+}
+
+.sidebar.closed {
+  transform: translateX(-100%);
 }
 
 .sidebar button {
@@ -44,4 +49,21 @@ input {
 
 .sidebar nav a {
   @apply flex items-center gap-2 p-2 rounded hover:bg-darkacc;
+}
+
+/* Mobile-first media query */
+@media (max-width: 640px) {
+  .sidebar {
+    width: 100%; /* Take full width of the screen */
+    z-index: 1000; /* Ensure sidebar stays above content */
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar.closed {
+    transform: translateX(-100%);
+  }
 }

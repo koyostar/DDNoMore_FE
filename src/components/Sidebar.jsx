@@ -26,7 +26,7 @@ export default function Sidebar() {
       className={clsx(
         "flex items-center gap-2 p-2 rounded hover:bg-blue-700",
         path === el.link.split("/")[0]
-          ? "bg-blue-700 text-white"
+          ? "bg-darkacc text-white"
           : "text-gray-200"
       )}
     >

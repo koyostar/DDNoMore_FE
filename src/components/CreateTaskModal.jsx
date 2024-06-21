@@ -20,9 +20,12 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const updatedTaskData = { ...taskData, createdBy: user.id };
+
     try {
-      const response = await axiosInstance.post("/tasks/create", taskData);
-      const createdTask = response.data.task;
+      const response = await axios.post("/tasks/create", updatedTaskData);
+
       toast.success("Task created successfully!");
 
       setTaskData({
@@ -33,8 +36,7 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
         description: "",
       });
 
-      close();
-      onTaskCreated(createdTask);
+      onTaskCreated();
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         toast.error(error.response.data.error);
@@ -43,6 +45,7 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
       }
     }
   };
+
   const modalClass = open ? " fixed inset-0 z-10 overflow-y-auto" : "hidden";
 
   return (

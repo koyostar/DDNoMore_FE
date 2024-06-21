@@ -43,12 +43,13 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="container font-bold bg-lightsec mx-auto max-w-md p-4 rounded-2xl">
       <LoginTabs />
       <div className="form-container m-4">
         <form onSubmit={loginUser}>
           <label>Username: </label>
           <input
+            className="m-4"
             type="text"
             placeholder="Enter username"
             value={userData.username}
@@ -59,6 +60,7 @@ export default function Login() {
           <br />
           <label>Password: </label>
           <input
+            className="m-4"
             type="password"
             placeholder="Enter password"
             value={userData.password}
@@ -67,7 +69,12 @@ export default function Login() {
             }
           ></input>
           <br />
-          <button type="submit">Login</button>
+          <button
+            className="bg-lightacc text-darksec text-center my-4 mx-2 px-4 py-2 rounded"
+            type="submit"
+          >
+            Login
+          </button>
         </form>
       </div>
     </div>

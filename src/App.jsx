@@ -15,14 +15,15 @@ import Header from "./components/Header";
 import TaskCard from "./components/TaskCard";
 import Settings from "./pages/Settings";
 
-axios.defaults.baseURL = "http://localhost:8000/";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 
 function AppContent() {
-  const { user } = useContext(UserContext);
+  const { user, setUser, isSidebarOpen, toggleSidebar, logoutUser } =
+    useContext(UserContext);
 
   return (
-    <div className="app-container">
+    <div className="app-container ">
       <Header />
       <Toaster
         position="bottom-center"
@@ -36,14 +37,20 @@ function AppContent() {
       />
       {user ? (
         <div>
-          <div className="flex-1 p-5">
+          <div className="  flex-1 p-5">
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/tasks" element={<Tasks />} />
+              <Route
+                path="/dashboard"
+                element={<Dashboard user={user} setUser={setUser} />}
+              />
+              <Route
+                path="/tasks"
+                element={<Tasks user={user} setUser={setUser} />}
+              />
               <Route path="/task/:id" element={<TaskCard />} />
               <Route path="/tasks/:status" element={<Tasks />} />
-              <Route path="/timer" element={<Timer />} />
+              <Route path="/timer" element={<Timer user={user} />} />
               <Route path="/settings" element={<Settings />} />
             </Routes>
           </div>

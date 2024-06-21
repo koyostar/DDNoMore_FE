@@ -8,9 +8,28 @@ export default function Home() {
   const location = useLocation();
 
   return (
-    <div>
-      <LoginTabs />
-      <main className="text-lightpri p-4 container flex mx-auto min-h-screen items-center justify-center">
+    <div className="flex text-2xl font-bold items-center justify-center h-full bg-darkpri text-lightpri">
+      <Link
+        to="/login"
+        className={`login-btn text-center  m-5 px-5 py-3 rounded-2xl ${
+          location.pathname === "/login"
+            ? "bg-lightpri text-darksec  hover:bg-darkacc"
+            : "text-lightpri bg-darksec hover:text-darksec hover:bg-lightacc"
+        }`}
+      >
+        Login
+      </Link>
+      <Link
+        to="/register"
+        className={`login-btn text-center  m-5 px-5 py-3 rounded-2xl ${
+          location.pathname === "/register"
+            ? "bg-lightpri text-darksec  hover:bg-darkacc"
+            : "text-lightpri bg-darksec hover:text-darksec hover:bg-lightacc"
+        }`}
+      >
+        Register
+      </Link>
+      <main className="">
         {location.pathname === "/register" ? (
           <Register />
         ) : location.pathname === "/login" ? (
