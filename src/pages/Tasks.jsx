@@ -2,22 +2,21 @@ import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import CreateTaskModal from "../components/CreateTaskModal";
 import TaskCard from "../components/TaskCard";
-import axios from "axios";
 
 export default function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortCriterion, setSortCriterion] = useState("dueDate");
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get("/tasks");
-        const sortedTasks = sortTasks(response.data, sortCriterion);
+        const profile = await api.getProfile();
+        const sortedTasks = sortTasks(profile.tasks, sortCriterion);
         setTasks(sortedTasks);
       } catch (error) {
         if (

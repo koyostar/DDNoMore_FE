@@ -1,10 +1,6 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../utilities/user";
 
-export default function Header() {
-  const { user, toggleSidebar } = useContext(UserContext);
-
+export default function Header({ toggleSidebar, user }) {
   return (
     <div className="relative mt-4 flex items-center justify-center">
       {user ? (

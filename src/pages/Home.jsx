@@ -4,7 +4,7 @@ import Login from "./Login";
 import Register from "./Register";
 import LoginTabs from "../components/LoginTabs";
 
-export default function Home() {
+export default function Home({ setUser }) {
   const location = useLocation();
 
   return (
@@ -12,9 +12,9 @@ export default function Home() {
       <LoginTabs />
       <main className="text-lightpri p-4 container flex mx-auto min-h-screen items-center justify-center">
         {location.pathname === "/register" ? (
-          <Register />
+          <Register setUser={setUser} />
         ) : location.pathname === "/login" ? (
-          <Login />
+          <Login setUser={setUser} />
         ) : null}
       </main>
     </div>

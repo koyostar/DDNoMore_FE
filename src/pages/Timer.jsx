@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { FaPause, FaPlay, FaStop } from "react-icons/fa";
 
 export default function Timer() {
@@ -10,8 +9,8 @@ export default function Timer() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get("/tasks");
-        setTasks(response.data);
+        const profile = await api.getProfile();
+        setTasks(profile.tasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
@@ -29,32 +28,36 @@ export default function Timer() {
     }
   }, [selectedTask]);
 
-  const updateTask = async (url, message) => {
+  const startTimer = async () => {
     try {
-      const response = await axios.put(url);
-      console.log(response.data.message);
+      await api.updateTaskStatus(`/timer/start/${selectedTask._id}`, {
+        status: "in progress",
+      });
       fetchTasks();
     } catch (error) {
-      console.error(
-        `Error ${message}:`,
-        error.response ? error.response.data.message : error.message
-      );
+      console.error("Error starting task:", error.message);
     }
   };
 
-  const startTimer = () =>
-    updateTask(`/timer/start/${selectedTask._id}`, "starting task");
-  const pauseTimer = () =>
-    updateTask(`/timer/pause/${selectedTask._id}`, "pausing task");
-  const endTimer = () =>
-    updateTask(`/timer/end/${selectedTask._id}`, "ending task");
-
-  const fetchTasks = async () => {
+  const pauseTimer = async () => {
     try {
-      const response = await axios.get("/tasks");
-      setTasks(response.data);
+      await api.updateTaskStatus(`/timer/pause/${selectedTask._id}`, {
+        status: "paused",
+      });
+      fetchTasks();
     } catch (error) {
-      console.error("Error fetching tasks:", error);
+      console.error("Error pausing task:", error.message);
+    }
+  };
+
+  const endTimer = async () => {
+    try {
+      await api.updateTaskStatus(`/timer/end/${selectedTask._id}`, {
+        status: "completed",
+      });
+      fetchTasks();
+    } catch (error) {
+      console.error("Error ending task:", error.message);
     }
   };
 

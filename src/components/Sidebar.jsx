@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { FaRegUserCircle, FaTasks } from "react-icons/fa";
-import { MdDashboard, MdSettings, MdTimer } from "react-icons/md";
-import { UserContext } from "../utilities/user";
 import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import { IoLogOutOutline } from "react-icons/io5";
+import { MdDashboard, MdSettings, MdTimer } from "react-icons/md";
 
 const linkData = [
   { label: "Dashboard", link: "dashboard", icon: <MdDashboard /> },
@@ -13,9 +12,12 @@ const linkData = [
   { label: "Settings", link: "settings", icon: <MdSettings /> },
 ];
 
-export default function Sidebar() {
-  const { user, isSidebarOpen, toggleSidebar, logoutUser } =
-    useContext(UserContext);
+export default function Sidebar({
+  user,
+  isSidebarOpen,
+  toggleSidebar,
+  handleLogout,
+}) {
   const location = useLocation();
 
   const path = location.pathname.split("/")[1];
@@ -34,15 +36,6 @@ export default function Sidebar() {
       <span>{el.label}</span>
     </Link>
   );
-
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-      navigate("/");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
 
   return (
     <div className="relative">
@@ -68,7 +61,7 @@ export default function Sidebar() {
         <button
           onClick={() => {
             handleLogout();
-            closeMenu();
+            handleToggleSidebar();
           }}
           className="text-red-600 group flex w-full items-center rounded-md px-2 py-2 text-base hover:bg-gray-100"
         >

@@ -3,27 +3,27 @@ import "./index.css";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import axios from "axios";
 import { Toaster } from "react-hot-toast";
-import { UserContext, UserContextProvider } from "./utilities/user";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Timer from "./pages/Timer";
 import Sidebar from "./components/Sidebar";
-import { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Header from "./components/Header";
 import TaskCard from "./components/TaskCard";
 import Settings from "./pages/Settings";
+import { getUser } from "./utilities/users-service";
 
-axios.defaults.baseURL = "http://localhost:8000/";
-axios.defaults.withCredentials = true;
+function App() {
+  const [user, setUser] = useState(getUser());
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-function AppContent() {
-  const { user } = useContext(UserContext);
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <div className="app-container">
-      <Header />
       <Toaster
         position="bottom-center"
         toastOptions={{
@@ -34,37 +34,42 @@ function AppContent() {
           },
         }}
       />
+      <Header toggleSidebar={toggleSidebar} user={user} setUser={setUser} />
       {user ? (
-        <div>
-          <div className="flex-1 p-5">
-            <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/tasks" element={<Tasks />} />
-              <Route path="/task/:id" element={<TaskCard />} />
-              <Route path="/tasks/:status" element={<Tasks />} />
-              <Route path="/timer" element={<Timer />} />
-              <Route path="/settings" element={<Settings />} />
-            </Routes>
-          </div>
-          <Sidebar />
+        <div className="flex-1 p-5">
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route
+              path="/dashboard"
+              element={<Dashboard user={user} setUser={setUser} />}
+            />
+            <Route
+              path="/tasks"
+              element={<Tasks user={user} setUser={setUser} />}
+            />
+            <Route path="/task/:id" element={<TaskCard user={user} />} />
+            <Route path="/tasks/:status" element={<Tasks user={user} />} />
+            <Route path="/timer" element={<Timer user={user} />} />
+            <Route
+              path="/settings"
+              element={<Settings user={user} setUser={setUser} />}
+            />
+          </Routes>
+          <Sidebar
+            isSidebarOpen={isSidebarOpen}
+            toggleSidebar={toggleSidebar}
+            user={user}
+            setUser={setUser}
+          />
         </div>
       ) : (
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home setUser={setUser} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       )}
     </div>
-  );
-}
-
-function App() {
-  return (
-    <UserContextProvider>
-      <AppContent />
-    </UserContextProvider>
   );
 }
 
