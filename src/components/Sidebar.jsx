@@ -1,34 +1,21 @@
 import React, { useContext, useState } from "react";
-import { FaTasks } from "react-icons/fa";
-import {
-  MdDashboard,
-  MdOutlineTaskAlt,
-  MdPendingActions,
-  MdSettings,
-  MdTimer,
-} from "react-icons/md";
+import { FaRegUserCircle, FaTasks } from "react-icons/fa";
+import { MdDashboard, MdSettings, MdTimer } from "react-icons/md";
 import { UserContext } from "../utilities/user";
 import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
+import { IoLogOutOutline } from "react-icons/io5";
 
 const linkData = [
   { label: "Dashboard", link: "dashboard", icon: <MdDashboard /> },
   { label: "Tasks", link: "tasks", icon: <FaTasks /> },
-  {
-    label: "Completed",
-    link: "tasks/completed",
-    icon: <MdOutlineTaskAlt />,
-  },
-  {
-    label: "In Progress",
-    link: "tasks/in-progress",
-    icon: <MdPendingActions />,
-  },
   { label: "Timer", link: "timer", icon: <MdTimer /> },
+  { label: "Settings", link: "settings", icon: <MdSettings /> },
 ];
 
 export default function Sidebar() {
-  const { user, isSidebarOpen, toggleSidebar } = useContext(UserContext);
+  const { user, isSidebarOpen, toggleSidebar, logoutUser } =
+    useContext(UserContext);
   const location = useLocation();
 
   const path = location.pathname.split("/")[1];
@@ -48,33 +35,46 @@ export default function Sidebar() {
     </Link>
   );
 
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <div className="relative">
+      {isSidebarOpen && (
+        <div className="fixed inset-0" onClick={toggleSidebar}></div>
+      )}
+
       <div
         className={`sidebar ${
           isSidebarOpen ? "open" : "closed"
-        } bg-gray-800 text-white h-full transition-transform transform fixed top-0 left-0 z-0`}
+        } bg-darkpri text-white h-full transition-transform transform fixed top-0 left-0 z-0`}
       >
-        <div className="absolute top-0 right-0 mt-4 mr-4">
-          <button
-            onClick={toggleSidebar}
-            className=" bg-darksec text-lightpri px-4 py-2 rounded hover:bg-darkacc"
-          >
-            X
-          </button>
+        <div className="flex  m-4 text-white font-semibold">
+          <FaRegUserCircle className="mr-2" />
+          <span>{user?.name}</span>
         </div>
 
-        <nav className="flex flex-col gap-4 mt-16">
+        <nav className="flex flex-col mt-6">
           {linkData.map((link) => (
             <NavLink el={link} key={link.label} />
           ))}
         </nav>
-        <div className="mt-auto">
-          <button className="w-full flex gap-2 p-2 items-center text-lg text-gray-200 hover:bg-blue-700 mt-4">
-            <MdSettings />
-            <span>Settings</span>
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            handleLogout();
+            closeMenu();
+          }}
+          className="text-red-600 group flex w-full items-center rounded-md px-2 py-2 text-base hover:bg-gray-100"
+        >
+          <IoLogOutOutline className="mr-2" aria-hidden="true" />
+          Logout
+        </button>
       </div>
     </div>
   );

@@ -12,8 +12,8 @@ import Timer from "./pages/Timer";
 import Sidebar from "./components/Sidebar";
 import { useContext } from "react";
 import Header from "./components/Header";
-import Navbar from "./components/Navbar";
 import TaskCard from "./components/TaskCard";
+import Settings from "./pages/Settings";
 
 axios.defaults.baseURL = "http://localhost:8000/";
 axios.defaults.withCredentials = true;
@@ -36,7 +36,6 @@ function AppContent() {
       />
       {user ? (
         <div>
-          <Navbar />
           <div className="flex-1 p-5">
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" />} />
@@ -45,6 +44,7 @@ function AppContent() {
               <Route path="/task/:id" element={<TaskCard />} />
               <Route path="/tasks/:status" element={<Tasks />} />
               <Route path="/timer" element={<Timer />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </div>
           <Sidebar />
