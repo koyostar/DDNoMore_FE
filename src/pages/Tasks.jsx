@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import CreateTaskModal from "../components/CreateTaskModal";
 import TaskCard from "../components/TaskCard";
 import axios from "axios";
+import EditTaskModal from "../components/EditTaskModal";
 
 export default function Tasks({ user, setUser }) {
   const [tasks, setTasks] = useState([]);
@@ -10,9 +11,21 @@ export default function Tasks({ user, setUser }) {
   const [sortCriterion, setSortCriterion] = useState("dueDate");
   const [filterArchived, setFilterArchived] = useState(false);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState(null);
+
+  const openCreateModal = () => setIsCreateModalOpen(true);
+  const closeCreateModal = () => setIsCreateModalOpen(false);
+
+  const openEditModal = (task) => {
+    setTaskToEdit(task);
+    setIsEditModalOpen(true);
+  };
+  const closeEditModal = () => {
+    setTaskToEdit(null);
+    setIsEditModalOpen(false);
+  };
 
   useEffect(() => {
     fetchTasks();
@@ -80,11 +93,14 @@ export default function Tasks({ user, setUser }) {
     fetchTasks();
   };
 
+  const handleTaskUpdated = () => {
+    closeEditModal();
+    fetchTasks();
+  };
+
   return (
     <div className="Tasks">
-      <Toaster />
-      <h1 className="text-2xl text-center font-bold">Tasks</h1>
-      <div className=" mb-6 ">
+      <div className=" my-6 ">
         <div className="flex justify-between">
           <div>
             <span className="mr-2">Due Date</span>
@@ -108,7 +124,7 @@ export default function Tasks({ user, setUser }) {
           <div>
             <button
               className="ml-4 bg-lightsec inline-flex justify-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md hover:bg-darkacc"
-              onClick={openModal}
+              onClick={openCreateModal}
             >
               Add Task
             </button>
@@ -170,13 +186,24 @@ export default function Tasks({ user, setUser }) {
         </div>
       </div>
       <CreateTaskModal
-        open={isModalOpen}
-        close={closeModal}
+        open={isCreateModalOpen}
+        close={closeCreateModal}
         onTaskCreated={handleTaskCreated}
+      />
+      <EditTaskModal
+        open={isEditModalOpen}
+        close={closeEditModal}
+        onTaskUpdated={handleTaskUpdated}
+        task={taskToEdit}
       />
       <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {tasks.filter(filterTasksByStatus).map((task) => (
-          <TaskCard key={task._id} task={task} fetchTasks={fetchTasks} />
+          <TaskCard
+            key={task._id}
+            task={task}
+            fetchTasks={fetchTasks}
+            onEdit={openEditModal}
+          />
         ))}
       </div>
     </div>

@@ -3,7 +3,8 @@ import axios from "axios";
 import { UserContext } from "../utilities/user";
 
 export default function Dashboard() {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
   const [totalTasks, setTotalTasks] = useState(0);
   const [completedTasks, setCompletedTasks] = useState(0);
   const [tasksInProgress, setTasksInProgress] = useState(0);

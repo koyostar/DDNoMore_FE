@@ -10,7 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Timer from "./pages/Timer";
 import Sidebar from "./components/Sidebar";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Header from "./components/Header";
 import TaskCard from "./components/TaskCard";
 import Settings from "./pages/Settings";
@@ -19,12 +19,15 @@ axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 
 function AppContent() {
-  const { user, setUser, isSidebarOpen, toggleSidebar, logoutUser } =
+  const { user, setUser, isSidebarOpen, toggleSidebar } =
     useContext(UserContext);
 
   return (
     <div className="app-container ">
       <Header />
+      {user && (
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      )}
       <Toaster
         position="bottom-center"
         toastOptions={{
@@ -35,10 +38,10 @@ function AppContent() {
           },
         }}
       />
-      {user ? (
-        <div>
-          <div className="  flex-1 p-5">
-            <Routes>
+      <div className="  flex-1 p-5">
+        <Routes>
+          {user ? (
+            <>
               <Route path="/" element={<Navigate to="/dashboard" />} />
               <Route
                 path="/dashboard"
@@ -52,17 +55,16 @@ function AppContent() {
               <Route path="/tasks/:status" element={<Tasks />} />
               <Route path="/timer" element={<Timer user={user} />} />
               <Route path="/settings" element={<Settings />} />
-            </Routes>
-          </div>
-          <Sidebar />
-        </div>
-      ) : (
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+            </>
+          ) : (
+            <>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </>
+          )}
         </Routes>
-      )}
+      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { FaRegUserCircle, FaTasks } from "react-icons/fa";
 import { MdDashboard, MdSettings, MdTimer } from "react-icons/md";
 import { UserContext } from "../utilities/user";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { IoLogOutOutline } from "react-icons/io5";
 
@@ -14,15 +14,17 @@ const linkData = [
 ];
 
 export default function Sidebar() {
-  const { user, isSidebarOpen, toggleSidebar, logoutUser } =
+  const { user, isSidebarOpen, toggleSidebar, logoutUser, closeSidebar } =
     useContext(UserContext);
   const location = useLocation();
+  const navigate = useNavigate;
 
   const path = location.pathname.split("/")[1];
 
   const NavLink = ({ el }) => (
     <Link
       to={el.link}
+      onClick={() => closeSidebar()}
       className={clsx(
         "flex items-center gap-2 p-2 rounded hover:bg-blue-700",
         path === el.link.split("/")[0]
@@ -38,7 +40,8 @@ export default function Sidebar() {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      navigate("/");
+      closeSidebar();
+      navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -47,7 +50,7 @@ export default function Sidebar() {
   return (
     <div className="relative">
       {isSidebarOpen && (
-        <div className="fixed inset-0" onClick={toggleSidebar}></div>
+        <div className="fixed inset-0 text-white" onClick={toggleSidebar}></div>
       )}
 
       <div
@@ -68,9 +71,8 @@ export default function Sidebar() {
         <button
           onClick={() => {
             handleLogout();
-            closeMenu();
           }}
-          className="text-red-600 group flex w-full items-center rounded-md px-2 py-2 text-base hover:bg-gray-100"
+          className="group flex w-full items-center rounded-md px-2 py-2 text-base hover:bg-gray-100"
         >
           <IoLogOutOutline className="mr-2" aria-hidden="true" />
           Logout

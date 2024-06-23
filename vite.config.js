@@ -12,6 +12,10 @@ export default defineConfig({
         secure: false,
       },
     },
+    // Ensure Vite serves index.html for unknown routes
+    hmr: {
+      overlay: false,
+    },
   },
   build: {
     outDir: "dist",

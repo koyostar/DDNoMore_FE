@@ -2,9 +2,9 @@ import axios from "axios";
 import React from "react";
 import toast from "react-hot-toast";
 import { BiSolidHide, BiSolidShow } from "react-icons/bi";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
 
-export default function TaskCard({ task, fetchTasks }) {
+export default function TaskCard({ task, fetchTasks, onEdit }) {
   const getPriorityColor = (priority) => {
     switch (priority) {
       case "High":
@@ -43,8 +43,6 @@ export default function TaskCard({ task, fetchTasks }) {
 
   const handleArchive = async () => {
     try {
-      console.log(`Archiving task with ID: ${task._id}`);
-
       const response = await axios.put(`/tasks/${task._id}/archive`);
       toast.success(response.data.message);
       fetchTasks();
@@ -89,6 +87,12 @@ export default function TaskCard({ task, fetchTasks }) {
             className="px-4 py-2 mr-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none"
           >
             <MdDelete />
+          </button>
+          <button
+            onClick={() => onEdit(task)}
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
+          >
+            <MdEdit />
           </button>
           {task.isArchived ? (
             <button

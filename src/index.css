@@ -33,6 +33,7 @@ input {
   top: 0;
   background-color: #2c3e50;
   transform: translateX(-100%);
+  z-index: 1000;
 }
 
 .sidebar.open {
@@ -44,17 +45,16 @@ input {
 }
 
 .sidebar button {
-  @apply mb-5 bg-darksec text-lightpri px-4 py-2 rounded hover:bg-darkacc;
+  @apply mb-5 text-lightpri px-4 py-2 rounded hover:bg-darkacc;
 }
 
 .sidebar nav a {
   @apply flex items-center gap-2 p-2 rounded hover:bg-darkacc;
 }
 
-/* Mobile-first media query */
 @media (max-width: 640px) {
   .sidebar {
-    width: 100%; /* Take full width of the screen */
+    width: 50%;
     z-index: 1000; /* Ensure sidebar stays above content */
     transform: translateX(-100%);
   }

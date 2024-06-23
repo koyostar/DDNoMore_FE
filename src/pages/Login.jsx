@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import LoginTabs from "../components/LoginTabs";
+import { UserContext } from "../utilities/user";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { setUser, closeSidebar } = useContext(UserContext);
 
   const [userData, setUserData] = useState({
     username: "",
@@ -26,10 +28,8 @@ export default function Login() {
       if (data.error) {
         toast.error(data.error);
       } else {
-        setUserData({
-          username: "",
-          password: "",
-        });
+        setUser(data);
+        closeSidebar();
         toast.success("Login Successful. Welcome!");
         navigate("/dashboard");
       }

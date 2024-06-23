@@ -14,6 +14,10 @@ export function UserContextProvider({ children }) {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -32,15 +36,14 @@ export function UserContextProvider({ children }) {
       }
     };
 
-    if (!user) {
-      fetchProfile();
-    }
-  }, [user]);
+    fetchProfile();
+  }, []);
 
   const logoutUser = async () => {
     try {
       await axios.post("/logout");
       setUser(null);
+      setIsSidebarOpen(false);
       navigate("/login");
       toast.success("Logout Successful. See you soon!");
     } catch (error) {
@@ -55,6 +58,7 @@ export function UserContextProvider({ children }) {
         setUser,
         isSidebarOpen,
         toggleSidebar,
+        closeSidebar,
         logoutUser,
       }}
     >
