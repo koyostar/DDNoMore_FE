@@ -1,8 +1,41 @@
-# React + Vite
+# My Travel Buddy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**_Are your itineries all over the place? Having trouble finding travel information you need in one glance? My Travel Buddy is a one-solution to your travel planning!_**
 
-Currently, two official plugins are available:
+## Click link to start using: https://travel-buddy-ebon.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
+
+### Screenshot
+
+**Home:**
+![Screenshot of app](src/assets/Screenshot-Homepage.png)
+
+**Lodging:**
+![Screenshot of app](src/assets/Screenshot-Lodging.png)
+
+**Places:**
+![Screenshot of app](src/assets/Screenshot-Places.png)
+
+**Food:**
+![Screenshot of app](src/assets/Screenshot-Food.png)
+
+---
+
+### Technologies Used
+
+- Vite + React
+- JavaScript
+- HTML
+- CSS
+- Airtable
+
+---
+
+### Planning + Next Steps
+
+https://trello.com/invite/b/QeyIHG6g/ATTIbe584792ffa95934cc1fb59de10506040709FC79/project-2-trip-buddy
+
+- Address Autocomplete
+- Map Directions
+- Expenses Tracking
