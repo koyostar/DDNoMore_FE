@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { UserContext } from "../utilities/user";
 
-export default function CreateTaskModal({ open, close, onTaskCreated }) {
+export default function EditTaskModal({ open, close, onTaskUpdated, task }) {
   const { user } = useContext(UserContext);
   const [taskData, setTaskData] = useState({
     title: "",
@@ -13,6 +13,17 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
     description: "",
   });
 
+  useEffect(() => {
+    if (task) {
+      setTaskData({
+        ...task,
+        dueDate: task.dueDate
+          ? new Date(task.dueDate).toISOString().split("T")[0]
+          : "",
+      });
+    }
+  }, [task]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTaskData({ ...taskData, [name]: value });
@@ -21,27 +32,17 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const updatedTaskData = { ...taskData, createdBy: user.id };
-
     try {
-      const response = await axios.post("/tasks/create", updatedTaskData);
+      const response = await axios.put(`/tasks/${task._id}/edit`, taskData);
 
-      toast.success("Task created successfully!");
+      toast.success("Task updated successfully!");
 
-      setTaskData({
-        title: "",
-        dueDate: "",
-        priority: "Normal",
-        status: "To Do",
-        description: "",
-      });
-
-      onTaskCreated();
+      onTaskUpdated();
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         toast.error(error.response.data.error);
       } else {
-        toast.error("Failed to create task. Please try again.");
+        toast.error("Failed to update task. Please try again.");
       }
     }
   };
@@ -53,7 +54,7 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
       <div className="flex items-center justify-center min-h-screen">
         <div className="fixed inset-0 opacity-30" onClick={close}></div>
         <div className="relative bg-lightsec p-8 rounded-lg w-full max-w-md">
-          <h3 className="text-lg font-medium mb-4">Create Task</h3>
+          <h3 className="text-lg font-medium mb-4">Edit Task</h3>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-darksec">
@@ -143,12 +144,12 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
               />
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 flex justify-center">
               <button
                 type="submit"
                 className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-darksec border border-transparent rounded-md hover:bg-darkacc focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
               >
-                Create Task
+                Update Task
               </button>
             </div>
           </form>

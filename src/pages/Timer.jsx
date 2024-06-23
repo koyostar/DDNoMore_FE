@@ -28,7 +28,6 @@ export default function Timer({ user }) {
       }
       const response = await axios.get(`/tasks/user/${user.username}`);
       setTasks(response.data);
-      // Ensure selectedTask remains valid after tasks update
       if (selectedTask) {
         const updatedSelectedTask = response.data.find(
           (t) => t._id === selectedTask._id
@@ -36,7 +35,7 @@ export default function Timer({ user }) {
         if (updatedSelectedTask) {
           setSelectedTask(updatedSelectedTask);
         } else {
-          setSelectedTask(null); // Clear selectedTask if it's not found in updated tasks
+          setSelectedTask(null);
         }
       }
     } catch (error) {
@@ -47,7 +46,6 @@ export default function Timer({ user }) {
   const updateTask = async (url, message) => {
     try {
       const response = await axios.put(url);
-      console.log(`${message} successful:`, response.data.message);
       fetchTasks();
     } catch (error) {
       console.error(
@@ -59,17 +57,24 @@ export default function Timer({ user }) {
 
   const startTimer = () => {
     if (!selectedTask) return;
-    updateTask(`/timer/start/${selectedTask._id}`, "Starting task");
+    updateTask(`/timer/${selectedTask._id}/start`, "Starting task");
   };
 
   const pauseTimer = () => {
     if (!selectedTask) return;
-    updateTask(`/timer/pause/${selectedTask._id}`, "Pausing task");
+    updateTask(`/timer/${selectedTask._id}/pause`, "Pausing task");
   };
 
   const endTimer = () => {
     if (!selectedTask) return;
-    updateTask(`/timer/end/${selectedTask._id}`, "Ending task");
+    updateTask(`/timer/${selectedTask._id}/end`, "Ending task");
+  };
+
+  const resetTimer = () => {
+    if (!selectedTask) return;
+    if (window.confirm("Are you sure you want to reset the timer?")) {
+      updateTask(`/timer/${selectedTask._id}/reset`, "Reseting timer");
+    }
   };
 
   const handleTaskChange = (event) => {
@@ -112,8 +117,7 @@ export default function Timer({ user }) {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="timer-container bg-lightacc text-darkpri p-5 rounded-lg md:box-content w-2/3">
-        <h1 className="text-center">Timer</h1>
+      <div className="timer-container flex flex-col items-center bg-lightacc text-darkpri p-5 rounded-lg md:box-content w-3/4">
         <div className="m-5 text-center">
           Task:&emsp;
           <select onChange={handleTaskChange} defaultValue="">
@@ -128,30 +132,39 @@ export default function Timer({ user }) {
           </select>
         </div>
 
-        <div className="m-5">
-          <h2 className="text-center font-bold text-xl mb-3">
-            {selectedTask ? selectedTask.title : ""}
+        <div className="m-5 ">
+          <h2 className="text-darksec text-center font-bold text-2xl mb-5">
+            {selectedTask ? selectedTask.title : "No Task Selected"}
           </h2>
-          <div className="ml-36 text-xl mb-3">
-            <p>
-              Start Date:&emsp;
-              {selectedTask
-                ? selectedTask.startDate
-                  ? new Date(selectedTask.startDate).toLocaleString()
-                  : "Not started"
-                : ""}
+          <div className="flex flex-col text-xl space-y-3">
+            <p className="flex justify-between">
+              <span className="mr-6">Start Date:&emsp;</span>
+              <span className="font-bold text-left">
+                {selectedTask
+                  ? selectedTask.startDate
+                    ? new Date(selectedTask.startDate).toLocaleString()
+                    : "Not started"
+                  : ""}
+              </span>
             </p>
-            <p>
-              Completed Date:&emsp;
-              {selectedTask
-                ? selectedTask.completedDate
-                  ? new Date(selectedTask.completedDate).toLocaleString()
-                  : "Not completed"
-                : ""}
+            <p className="flex justify-between">
+              <span className="mr-6">Completed Date:&emsp;</span>
+              <span className="font-bold text-left">
+                {selectedTask
+                  ? selectedTask.completedDate
+                    ? new Date(selectedTask.completedDate).toLocaleString()
+                    : "Not completed"
+                  : ""}
+              </span>
             </p>
-            <p>Status:&emsp; {selectedTask ? selectedTask.status : ""}</p>
+            <p className="flex justify-between">
+              <span className="mr-6">Status:&emsp;</span>
+              <span className="font-bold text-left">
+                {selectedTask ? selectedTask.status : ""}
+              </span>
+            </p>
           </div>
-          <div className="text-center font-bold text-xl mb-3">
+          <div className="text-center font-bold text-xl mt-8">
             Logged Time:&emsp;
             <br />
             <span className="timer text-4xl">
@@ -164,7 +177,7 @@ export default function Timer({ user }) {
           </div>
         </div>
 
-        <div className="flex space-x-4 justify-center text-lightpri m-5">
+        <div className="text-2xl flex space-x-4 justify-center text-lightpri ">
           <button
             onClick={startTimer}
             disabled={!selectedTask || selectedTask.status === "In Progress"}
@@ -189,17 +202,36 @@ export default function Timer({ user }) {
           </button>
           <button
             onClick={endTimer}
-            disabled={!selectedTask || selectedTask.status === "Completed"}
+            disabled={
+              !selectedTask ||
+              selectedTask.status === "Completed" ||
+              selectedTask.status === "To Do"
+            }
             className={`px-4 py-2 rounded ${
-              !selectedTask || selectedTask.status === "Completed"
+              !selectedTask ||
+              selectedTask.status === "Completed" ||
+              selectedTask.status === "To Do"
                 ? "bg-disabled cursor-not-allowed"
                 : "bg-enabled hover:bg-blue-700"
             }`}
           >
             <FaStop />
+          </button>{" "}
+        </div>
+        <div className="flex justify-center text-lightpri m-5">
+          <button
+            onClick={resetTimer}
+            disabled={!selectedTask}
+            className={`px-4 py-2 rounded ${
+              !selectedTask
+                ? "bg-disabled cursor-not-allowed"
+                : "bg-enabled hover:bg-blue-700"
+            }`}
+          >
+            Reset
           </button>
         </div>
-      </div>{" "}
+      </div>
     </div>
   );
 }
