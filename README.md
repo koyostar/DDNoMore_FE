@@ -1,24 +1,24 @@
-# My Travel Buddy
+# DD No More
 
-**_Are your itineries all over the place? Having trouble finding travel information you need in one glance? My Travel Buddy is a one-solution to your travel planning!_**
+**_Are you always dilly dallying and procrastinating on your tasks? Having trouble keeping track of your working hours of a certain assignment? DD No More helps you keep track of all your tasks on hand and allow you to keep track on actual time spent._**
 
-## Click link to start using: https://travel-buddy-ebon.vercel.app/
+## Click link to start using: https://dd-no-more.vercel.app//
 
 ---
 
 ### Screenshot
 
-**Home:**
-![Screenshot of app](src/assets/Screenshot-Homepage.png)
+**Dashboard:**
+![Screenshot of app](src/assets/DDNoMore_Add Task.png)
 
-**Lodging:**
-![Screenshot of app](src/assets/Screenshot-Lodging.png)
+**Tasks:**
+![Screenshot of app](src/assets/DDNoMore_Add Task.png)
 
-**Places:**
-![Screenshot of app](src/assets/Screenshot-Places.png)
+**Add Task:**
+![Screenshot of app](src/assets/DDNoMore_Add Task.png)
 
-**Food:**
-![Screenshot of app](src/assets/Screenshot-Food.png)
+**Timer:**
+![Screenshot of app](src/assets/DDNoMore_Add Task.png)
 
 ---
 
@@ -28,14 +28,12 @@
 - JavaScript
 - HTML
 - CSS
-- Airtable
+- MongoDB
+- Tailwind
+- Hot Toast
 
----
+### Next Steps
 
-### Planning + Next Steps
-
-https://trello.com/invite/b/QeyIHG6g/ATTIbe584792ffa95934cc1fb59de10506040709FC79/project-2-trip-buddy
-
-- Address Autocomplete
-- Map Directions
-- Expenses Tracking
+- Project Tagging
+- Deadline Notification
+- Calendar View
