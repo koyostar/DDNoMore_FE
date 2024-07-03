@@ -132,7 +132,7 @@ export default function Tasks({ user, setUser }) {
         </div>
       </div>
       <div className="flex justify-between items-center mt-6">
-        <div className=" bg-lightacc grid grid-cols-5 space-x-4 rounded-full w-full">
+        <div className="filter-bar">
           <button
             className={`text-md px-1 py-1 ${
               filterStatus === "All"
@@ -161,7 +161,7 @@ export default function Tasks({ user, setUser }) {
             }`}
             onClick={() => handleFilterChange("In Progress")}
           >
-            In Progress
+            Ongoing
           </button>
           <button
             className={`text-md px-1 py-1 ${

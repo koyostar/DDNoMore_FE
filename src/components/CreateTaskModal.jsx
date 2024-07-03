@@ -50,9 +50,9 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
 
   return (
     <div className={modalClass}>
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center h-3/4">
         <div className="fixed inset-0 opacity-30" onClick={close}></div>
-        <div className="relative bg-lightsec p-8 rounded-lg w-full max-w-md">
+        <div className="relative bg-lightsec p-8 rounded-lg w-11/12">
           <h3 className="text-lg font-medium mb-4">Create Task</h3>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">

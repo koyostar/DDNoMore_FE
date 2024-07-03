@@ -52,6 +52,10 @@ input {
   @apply flex items-center gap-2 p-2 rounded hover:bg-darkacc;
 }
 
+.filter-bar {
+  @apply bg-lightacc grid grid-cols-5 space-x-4 rounded-full w-full;
+}
+
 @media (max-width: 640px) {
   .sidebar {
     width: 50%;
@@ -65,5 +69,9 @@ input {
 
   .sidebar.closed {
     transform: translateX(-100%);
+  }
+
+  .filter-bar {
+    @apply text-sm space-x-0 w-full;
   }
 }
