@@ -119,8 +119,12 @@ export default function Timer({ user }) {
     <div className="flex items-center justify-center">
       <div className="timer-container flex flex-col items-center bg-lightacc text-darkpri p-5 rounded-lg md:box-content w-3/4">
         <div className="m-5 text-center">
-          Task:&emsp;
-          <select onChange={handleTaskChange} defaultValue="">
+          <span className="mr-2">Task:</span>
+          <select
+            onChange={handleTaskChange}
+            defaultValue=""
+            className="mt-2 w-full max-w-xs"
+          >
             <option value="" disabled>
               Select a task
             </option>
