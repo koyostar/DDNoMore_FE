@@ -3,23 +3,23 @@ import { Link } from "react-router-dom";
 
 export default function LoginTabs() {
   return (
-    <div className="grid grid-cols-2">
+    <div className="flex flex-row justify-between bg-transparent">
       <Link
         to="/login"
-        className={`login-btn text-center rounded ${
+        className={`login-btn text-xl w-1/2 text-center py-1 rounded-tl-xl ${
           location.pathname === "/login"
-            ? "bg-lightpri text-darksec  hover:bg-darkacc"
-            : "text-lightpri bg-darksec hover:text-darksec hover:bg-lightacc"
+            ? "bg-lightsec text-darksec  hover:bg-darkacc"
+            : "text-lightsec bg-darkpri hover:text-darksec hover:bg-lightacc"
         }`}
       >
         Login
       </Link>
       <Link
         to="/register"
-        className={`login-btn text-center rounded ${
+        className={`login-btn text-xl w-1/2 text-center py-1 rounded-tr-xl ${
           location.pathname === "/register"
-            ? "bg-lightpri text-darksec  hover:bg-darkacc"
-            : "text-lightpri bg-darksec hover:text-darksec hover:bg-lightacc"
+            ? "bg-lightsec text-darksec  hover:bg-darkacc"
+            : "text-lightsec bg-darkpri hover:text-darksec hover:bg-lightacc"
         }`}
       >
         Register

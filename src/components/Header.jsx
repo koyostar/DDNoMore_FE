@@ -11,7 +11,7 @@ export default function Header() {
         <div className="sidebar-toggle flex gap-4">
           <button
             onClick={toggleSidebar}
-            className="absolute left-4 top-2 text-4xl text-white"
+            className="absolute left-4 top-2 text-4xl text-darksec"
           >
             ☰
           </button>
@@ -20,7 +20,7 @@ export default function Header() {
         <div />
       )}
       <Link to="/">
-        <span className="text-lightpri font-bebas text-6xl font-bold">
+        <span className="text-darksec font-bebas text-6xl font-bold">
           DD No More
         </span>
       </Link>

@@ -8,10 +8,10 @@ export default function Home() {
   const location = useLocation();
 
   return (
-    <div className="flex text-2xl font-bold items-center justify-center h-full bg-darkpri text-lightpri">
+    <div className="flex text-2xl font-bold items-center justify-center h-full text-lightpri">
       <Link
         to="/login"
-        className={`login-btn text-center  m-5 px-5 py-3 rounded-2xl ${
+        className={`login-btn text-center m-5 px-5 py-3 rounded-2xl ${
           location.pathname === "/login"
             ? "bg-lightpri text-darksec  hover:bg-darkacc"
             : "text-lightpri bg-darksec hover:text-darksec hover:bg-lightacc"
@@ -21,7 +21,7 @@ export default function Home() {
       </Link>
       <Link
         to="/register"
-        className={`login-btn text-center  m-5 px-5 py-3 rounded-2xl ${
+        className={`login-btn text-center m-5 px-5 py-3 rounded-2xl ${
           location.pathname === "/register"
             ? "bg-lightpri text-darksec  hover:bg-darkacc"
             : "text-lightpri bg-darksec hover:text-darksec hover:bg-lightacc"

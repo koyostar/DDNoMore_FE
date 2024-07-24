@@ -36,7 +36,12 @@ export default function Settings() {
       setUser(response.data);
       toast.success("Profile updated successfully!");
     } catch (error) {
-      toast.error("Failed to update profile. Please try again.");
+      if (error.response) {
+        const errorMsg = error.response.data.error;
+        toast.error(errorMsg);
+      } else {
+        toast.error("Failed to update profile");
+      }
     }
   };
 
@@ -64,23 +69,23 @@ export default function Settings() {
   };
 
   return (
-    <div className="container font-bold bg-lightsec mx-auto max-w-md p-4 rounded-2xl">
-      <div className="tabs mb-6 flex space-x-4 justify-center">
+    <div className="container font-bold bg-lightsec mx-auto max-w-md rounded-2xl">
+      <div className="flex flex-row justify-between bg-transparent">
         <button
-          className={`tab px-4 py-2 rounded-md ${
+          className={`tab text-xl w-1/2 text-center p-2 rounded-tl-xl ${
             activeTab === "profile"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-700"
+              ? "bg-lightsec text-darksec  hover:bg-darkacc"
+              : "text-lightsec bg-darkpri hover:text-darksec hover:bg-lightacc"
           }`}
           onClick={() => setActiveTab("profile")}
         >
           Edit Profile
         </button>
         <button
-          className={`tab px-4 py-2 rounded-md ${
+          className={`tab text-xl w-1/2 text-center p-2 rounded-tr-xl ${
             activeTab === "password"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-700"
+              ? "bg-lightsec text-darksec  hover:bg-darkacc"
+              : "text-lightsec bg-darkpri hover:text-darksec hover:bg-lightacc"
           }`}
           onClick={() => setActiveTab("password")}
         >
@@ -90,9 +95,7 @@ export default function Settings() {
 
       {activeTab === "profile" && (
         <div className="form-container m-4">
-          <h2 className="text-xl font-semibold mb-2 text-center">
-            Edit Profile
-          </h2>
+          <h2 className="text-xl font-bold mb-2 text-center">Edit Profile</h2>
           <form onSubmit={updateProfile} className="flex flex-col space-y-4">
             <label>Name: </label>
             <input
@@ -124,7 +127,7 @@ export default function Settings() {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="bg-lightacc text-darksec my-4 mx-2 px-4 py-2 rounded"
+                className="bg-darksec text-lightpri my-4 mx-2 px-4 py-2 rounded"
               >
                 Update Profile
               </button>
@@ -169,7 +172,7 @@ export default function Settings() {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="bg-lightacc text-darksec my-4 mx-2 px-4 py-2 rounded"
+                className="bg-darksec text-lightpri my-4 mx-2 px-4 py-2 rounded"
               >
                 Change Password
               </button>

@@ -18,6 +18,9 @@ export default {
         disabled: "#ACB1D6",
         enabled: "#5F5D9C",
       },
+      backgroundImage: {
+        productivitybg: "url('/public/background.png')",
+      },
     },
   },
   plugins: [],

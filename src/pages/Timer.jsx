@@ -117,13 +117,13 @@ export default function Timer({ user }) {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="timer-container flex flex-col items-center bg-lightacc text-darkpri p-5 rounded-lg md:box-content w-3/4">
+      <div className="timer-container flex flex-col items-center bg-darksec text-lightpri p-5 rounded-lg md:box-content w-3/4">
         <div className="m-5 text-center">
           <span className="mr-2">Task:</span>
           <select
             onChange={handleTaskChange}
             defaultValue=""
-            className="mt-2 w-full max-w-xs"
+            className="text-darkpri mt-2 w-full max-w-xs"
           >
             <option value="" disabled>
               Select a task
@@ -137,7 +137,7 @@ export default function Timer({ user }) {
         </div>
 
         <div className="m-5 ">
-          <h2 className="text-darksec text-center font-bold text-2xl mb-5">
+          <h2 className="text-lightpri text-center font-bold text-2xl mb-5">
             {selectedTask ? selectedTask.title : "No Task Selected"}
           </h2>
           <div className="flex flex-col text-xl space-y-3">
@@ -187,8 +187,8 @@ export default function Timer({ user }) {
             disabled={!selectedTask || selectedTask.status === "In Progress"}
             className={`px-4 py-2 rounded ${
               !selectedTask || selectedTask.status === "In Progress"
-                ? "bg-disabled cursor-not-allowed"
-                : "bg-enabled hover:bg-blue-700"
+                ? "bg-lightacc/50 text-darksec cursor-not-allowed"
+                : "bg-lightacc text-darkpri hover:bg-blue-700"
             }`}
           >
             <FaPlay />
@@ -198,8 +198,8 @@ export default function Timer({ user }) {
             disabled={!selectedTask || selectedTask.status !== "In Progress"}
             className={`px-4 py-2 rounded ${
               !selectedTask || selectedTask.status !== "In Progress"
-                ? "bg-disabled cursor-not-allowed"
-                : "bg-enabled hover:bg-blue-700"
+                ? "bg-lightacc/50 text-darksec cursor-not-allowed"
+                : "bg-lightacc text-darkpri hover:bg-blue-700"
             }`}
           >
             <FaPause />
@@ -215,8 +215,8 @@ export default function Timer({ user }) {
               !selectedTask ||
               selectedTask.status === "Completed" ||
               selectedTask.status === "To Do"
-                ? "bg-disabled cursor-not-allowed"
-                : "bg-enabled hover:bg-blue-700"
+                ? "bg-lightacc/50 text-darksec cursor-not-allowed"
+                : "bg-lightacc text-darkpri hover:bg-blue-700"
             }`}
           >
             <FaStop />
@@ -228,8 +228,8 @@ export default function Timer({ user }) {
             disabled={!selectedTask}
             className={`px-4 py-2 rounded ${
               !selectedTask
-                ? "bg-disabled cursor-not-allowed"
-                : "bg-enabled hover:bg-blue-700"
+                ? "bg-lightacc/50 text-darksec cursor-not-allowed"
+                : "bg-lightacc text-darkpri hover:bg-blue-700"
             }`}
           >
             Reset

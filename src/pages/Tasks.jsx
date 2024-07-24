@@ -101,8 +101,8 @@ export default function Tasks({ user, setUser }) {
   return (
     <div className="Tasks">
       <div className=" my-6 ">
-        <div className="flex justify-between">
-          <div>
+        <div className="flex justify-end">
+          <div className="font-bold p-2 rounded flex">
             <span className="mr-2">Due Date</span>
             <label className="inline-flex items-center cursor-pointer">
               <input
@@ -136,7 +136,7 @@ export default function Tasks({ user, setUser }) {
           <button
             className={`text-md px-1 py-1 ${
               filterStatus === "All"
-                ? "bg-darkacc text-darksec font-bold rounded-full"
+                ? "bg-lightsec text-darksec text-lg font-bold rounded-full"
                 : " text-lightsec"
             }`}
             onClick={() => handleFilterChange("All")}
@@ -146,7 +146,7 @@ export default function Tasks({ user, setUser }) {
           <button
             className={`text-md px-1 py-1 ${
               filterStatus === "To Do"
-                ? "bg-darkacc text-darksec font-bold rounded-full"
+                ? "bg-lightsec text-darksec text-lg font-bold rounded-full"
                 : " text-lightsec"
             }`}
             onClick={() => handleFilterChange("To Do")}
@@ -156,7 +156,7 @@ export default function Tasks({ user, setUser }) {
           <button
             className={`text-md px-1 py-1 ${
               filterStatus === "In Progress"
-                ? "bg-darkacc text-darksec font-bold rounded-full"
+                ? "bg-lightsec text-darksec text-lg font-bold rounded-full"
                 : " text-lightsec"
             }`}
             onClick={() => handleFilterChange("In Progress")}
@@ -166,7 +166,7 @@ export default function Tasks({ user, setUser }) {
           <button
             className={`text-md px-1 py-1 ${
               filterStatus === "Completed"
-                ? "bg-darkacc text-darksec font-bold rounded-full"
+                ? "bg-lightsec text-darksec text-lg font-bold rounded-full"
                 : " text-lightsec"
             }`}
             onClick={() => handleFilterChange("Completed")}
@@ -176,7 +176,7 @@ export default function Tasks({ user, setUser }) {
           <button
             className={`text-md px-1 py-1 ${
               filterStatus === "Archived"
-                ? "bg-darkacc text-darksec font-bold rounded-full"
+                ? "bg-lightsec text-darksec text-lg font-bold rounded-full"
                 : " text-lightsec"
             }`}
             onClick={() => handleFilterChange("Archived")}
