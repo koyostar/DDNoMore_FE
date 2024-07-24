@@ -21,18 +21,10 @@ export function UserContextProvider({ children }) {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("/profile");
+        const response = await axios.get("/profile", { withCredentials: true });
         setUser(response.data);
       } catch (error) {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.error
-        ) {
-          toast.error(error.response.data.error);
-        } else {
-          toast.error("An error occurred. Please try again.");
-        }
+        setUser(null);
       }
     };
 

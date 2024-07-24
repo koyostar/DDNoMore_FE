@@ -40,59 +40,69 @@ export default function Register() {
   };
 
   return (
-    <div className="container font-bold bg-lightsec mx-auto max-w-md p-4 rounded-2xl">
+    <div className="container font-bold bg-lightsec mx-auto w-1/2 rounded-2xl">
       <LoginTabs />
-      <div className="form-container m-4">
-        <form onSubmit={registerUser}>
-          <label>Name: </label>
-          <input
-            className="m-4 "
-            type="text"
-            placeholder="Enter name"
-            value={userData.name}
-            onChange={(e) => setUserData({ ...userData, name: e.target.value })}
-          ></input>
-          <br />
-          <label>Username: </label>
-          <input
-            className="m-4 "
-            type="text"
-            placeholder="Enter username"
-            value={userData.username}
-            onChange={(e) =>
-              setUserData({ ...userData, username: e.target.value })
-            }
-          ></input>
-          <br />
-          <label>Email: </label>
-          <input
-            className="m-4 "
-            type="email"
-            placeholder="Enter email"
-            value={userData.email}
-            onChange={(e) =>
-              setUserData({ ...userData, email: e.target.value })
-            }
-          ></input>
-          <br />
-          <label>Password: </label>
-          <input
-            className="m-4 "
-            type="password"
-            placeholder="Enter password"
-            value={userData.password}
-            onChange={(e) =>
-              setUserData({ ...userData, password: e.target.value })
-            }
-          ></input>
-          <br />
-          <button
-            className="bg-lightacc text-darksec my-4 mx-2 px-4 py-2 rounded"
-            type="submit"
-          >
-            Submit
-          </button>
-        </form>
+      <div className=" flex-col justify-between items-center p-5">
+        <div className="form-container">
+          <form onSubmit={registerUser} className="p-2">
+            <div className="flex justify-between items-center">
+              <label>Name: </label>
+              <input
+                className="m-2 p-1 w-3/4"
+                type="text"
+                placeholder="Enter name"
+                value={userData.name}
+                onChange={(e) =>
+                  setUserData({ ...userData, name: e.target.value })
+                }
+              ></input>
+            </div>
+            <div className="flex justify-between items-center">
+              <label>Username: </label>
+              <input
+                className="m-2 p-1 w-3/4"
+                type="text"
+                placeholder="Enter username"
+                value={userData.username}
+                onChange={(e) =>
+                  setUserData({ ...userData, username: e.target.value })
+                }
+              ></input>
+            </div>
+            <div className="flex justify-between items-center">
+              <label>Email: </label>
+              <input
+                className="m-2 p-1 w-3/4"
+                type="email"
+                placeholder="Enter email"
+                value={userData.email}
+                onChange={(e) =>
+                  setUserData({ ...userData, email: e.target.value })
+                }
+              ></input>
+            </div>
+            <div className="flex justify-between items-center">
+              <label>Password: </label>
+              <input
+                className="m-2 p-1 w-3/4"
+                type="password"
+                placeholder="Enter password"
+                value={userData.password}
+                onChange={(e) =>
+                  setUserData({ ...userData, password: e.target.value })
+                }
+              ></input>
+            </div>
+            <div className="flex justify-center items-center">
+              <button
+                className="bg-lightacc text-darksec my-4 mx-2 px-4 py-2 rounded"
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
