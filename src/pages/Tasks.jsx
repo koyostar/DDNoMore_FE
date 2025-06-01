@@ -89,7 +89,7 @@ export default function Tasks({ user, setUser }) {
   };
 
   const handleTaskCreated = () => {
-    closeModal();
+    closeCreateModal();
     fetchTasks();
   };
 
@@ -123,7 +123,7 @@ export default function Tasks({ user, setUser }) {
 
           <div>
             <button
-              className="ml-4 bg-lightsec inline-flex justify-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md hover:bg-darkacc"
+              className="ml-4 bg-darksec inline-flex justify-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md hover:bg-darkacc"
               onClick={openCreateModal}
             >
               Add Task
