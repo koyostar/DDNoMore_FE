@@ -5,6 +5,7 @@ import { UserContext } from "../utilities/user";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { IoLogOutOutline } from "react-icons/io5";
+import { isDemo } from "../utilities/is-demo";
 
 const linkData = [
   { label: "Dashboard", link: "dashboard", icon: <MdDashboard /> },
@@ -17,9 +18,13 @@ export default function Sidebar() {
   const { user, isSidebarOpen, toggleSidebar, logoutUser, closeSidebar } =
     useContext(UserContext);
   const location = useLocation();
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   const path = location.pathname.split("/")[1];
+
+  const visibleLinks = isDemo(user)
+    ? linkData.filter((link) => link.label !== "Settings")
+    : linkData;
 
   const NavLink = ({ el }) => (
     <Link
@@ -64,7 +69,7 @@ export default function Sidebar() {
         </div>
 
         <nav className="flex flex-col mt-6">
-          {linkData.map((link) => (
+          {visibleLinks.map((link) => (
             <NavLink el={link} key={link.label} />
           ))}
         </nav>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { FaPause, FaPlay, FaStop } from "react-icons/fa";
 
@@ -6,6 +6,7 @@ export default function Timer({ user }) {
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const localStartDateRef = useRef(null);
 
   useEffect(() => {
     fetchTasks();
@@ -45,7 +46,7 @@ export default function Timer({ user }) {
 
   const updateTask = async (url, message) => {
     try {
-      const response = await axios.put(url);
+      await axios.put(url);
       fetchTasks();
     } catch (error) {
       console.error(
@@ -73,7 +74,7 @@ export default function Timer({ user }) {
   const resetTimer = () => {
     if (!selectedTask) return;
     if (window.confirm("Are you sure you want to reset the timer?")) {
-      updateTask(`/timer/${selectedTask._id}/reset`, "Reseting timer");
+      updateTask(`/timer/${selectedTask._id}/reset`, "Resetting timer");
     }
   };
 
@@ -84,6 +85,8 @@ export default function Timer({ user }) {
   };
 
   const formatDuration = (ms) => {
+    if (typeof ms !== "number" || isNaN(ms) || ms < 0) return "00:00:00";
+
     let totalSeconds = Math.floor(ms / 1000);
     let hours = Math.floor(totalSeconds / 3600);
     let minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -96,12 +99,18 @@ export default function Timer({ user }) {
   };
 
   const parseDuration = (duration) => {
+    if (!duration || typeof duration !== "string") return 0;
+
     const parts = duration.split(":");
+    if (parts.length !== 3) return 0;
+
     const hours = parseInt(parts[0], 10) || 0;
     const minutes = parseInt(parts[1], 10) || 0;
     const seconds = parseInt(parts[2], 10) || 0;
 
-    return hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) return 0;
+
+    return hours * 3600000 + minutes * 60000 + seconds * 1000;
   };
 
   const calculateRunningTime = () => {
@@ -115,6 +124,21 @@ export default function Timer({ user }) {
     return "00:00:00";
   };
 
+  const isPlayDisabled =
+    !selectedTask ||
+    (selectedTask.status === "In Progress" &&
+      selectedTask.loggedTime !== "00:00:00");
+
+  const isPauseDisabled =
+    !selectedTask ||
+    (selectedTask.status !== "In Progress" &&
+      selectedTask.loggedTime === "00:00:00");
+
+  const isStopDisabled =
+    !selectedTask ||
+    (selectedTask.status !== "In Progress" &&
+      selectedTask.loggedTime === "00:00:00");
+
   return (
     <div className="flex items-center justify-center">
       <div className="timer-container flex flex-col items-center bg-darksec text-lightpri p-5 rounded-lg md:box-content w-3/4">
@@ -122,7 +146,7 @@ export default function Timer({ user }) {
           <span className="mr-2">Task:</span>
           <select
             onChange={handleTaskChange}
-            defaultValue=""
+            value={selectedTask?._id || ""}
             className="text-darkpri mt-2 w-full max-w-xs"
           >
             <option value="" disabled>
@@ -154,11 +178,10 @@ export default function Timer({ user }) {
             <p className="flex justify-between">
               <span className="mr-6">Completed Date:&emsp;</span>
               <span className="font-bold text-left">
-                {selectedTask
-                  ? selectedTask.completedDate
-                    ? new Date(selectedTask.completedDate).toLocaleString()
-                    : "Not completed"
-                  : ""}
+                {selectedTask?.status === "Completed" &&
+                selectedTask.completedDate
+                  ? new Date(selectedTask.completedDate).toLocaleString()
+                  : "Not completed"}
               </span>
             </p>
             <p className="flex justify-between">
@@ -184,9 +207,9 @@ export default function Timer({ user }) {
         <div className="text-2xl flex space-x-4 justify-center text-lightpri ">
           <button
             onClick={startTimer}
-            disabled={!selectedTask || selectedTask.status === "In Progress"}
+            disabled={isPlayDisabled}
             className={`px-4 py-2 rounded ${
-              !selectedTask || selectedTask.status === "In Progress"
+              isPlayDisabled
                 ? "bg-lightacc/50 text-darksec cursor-not-allowed"
                 : "bg-lightacc text-darkpri hover:bg-blue-700"
             }`}
@@ -195,9 +218,9 @@ export default function Timer({ user }) {
           </button>
           <button
             onClick={pauseTimer}
-            disabled={!selectedTask || selectedTask.status !== "In Progress"}
+            disabled={isPauseDisabled}
             className={`px-4 py-2 rounded ${
-              !selectedTask || selectedTask.status !== "In Progress"
+              isPauseDisabled
                 ? "bg-lightacc/50 text-darksec cursor-not-allowed"
                 : "bg-lightacc text-darkpri hover:bg-blue-700"
             }`}
@@ -206,15 +229,9 @@ export default function Timer({ user }) {
           </button>
           <button
             onClick={endTimer}
-            disabled={
-              !selectedTask ||
-              selectedTask.status === "Completed" ||
-              selectedTask.status === "To Do"
-            }
+            disabled={isStopDisabled}
             className={`px-4 py-2 rounded ${
-              !selectedTask ||
-              selectedTask.status === "Completed" ||
-              selectedTask.status === "To Do"
+              isStopDisabled
                 ? "bg-lightacc/50 text-darksec cursor-not-allowed"
                 : "bg-lightacc text-darkpri hover:bg-blue-700"
             }`}

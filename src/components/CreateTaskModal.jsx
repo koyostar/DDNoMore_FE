@@ -35,14 +35,18 @@ export default function CreateTaskModal({ open, close, onTaskCreated }) {
         status: "To Do",
         description: "",
       });
-
-      onTaskCreated();
+      close();
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
-        toast.error(error.response.data.error);
-      } else {
-        toast.error("Failed to create task. Please try again.");
-      }
+      const message =
+        error.response?.data?.error ||
+        "Failed to create task. Please try again.";
+      toast.error(message);
+      return;
+    }
+    try {
+      onTaskCreated?.(); // safer with optional chaining
+    } catch (err) {
+      console.error("onTaskCreated failed:", err);
     }
   };
 
